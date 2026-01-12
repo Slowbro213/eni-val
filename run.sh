@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 
-python -m http.server 8000 --directory public
+python -m http.server 8000 --directory result
