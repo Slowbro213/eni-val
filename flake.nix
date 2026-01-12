@@ -59,6 +59,7 @@
             pkgs.gettext   # envsubst
             pkgs.gnugrep
             pkgs.coreutils
+            pkgs.esbuild
           ];
 
           installPhase = ''
@@ -86,6 +87,12 @@
                 exit 1
               fi
               cp "$WASM_DIR"/*.wasm "$out/"
+
+              #Minify and save to result
+              esbuild "js/$MQ_JS_BUNDLE" \
+              --minify \
+              --bundle=false \
+              --outfile="$out/$MQ_JS_BUNDLE"
             fi
 
             # Render index.html from html/index.html using config.env
