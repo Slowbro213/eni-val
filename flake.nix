@@ -22,6 +22,10 @@
           fenix.packages.${system}.targets.wasm32-unknown-unknown.stable.rust-std
         ];
 
+        mqJsBundle = pkgs.fetchurl {
+          url = "https://not-fl3.github.io/miniquad-samples/mq_js_bundle.js";
+          hash = "sha256-9BicA94LEM7ztxC9ytsi33uDXMq13lKjcU6Jbk/EjNc=";
+        };
 
         craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
 
@@ -83,11 +87,7 @@
             cp "$WASM_DIR/$WASM_FILE" "$out/"
             wasm-opt -O3 "$out/$WASM_FILE" -o "$out/$WASM_FILE"
 
-            #Minify and save to result
-            esbuild js/"$MQ_JS_BUNDLE" \
-            --minify \
-            --bundle=false \
-            --outfile="$out/$MQ_JS_BUNDLE"
+            esbuild "${mqJsBundle}" --minify --outfile="$out/mq_js_bundle.js"
 
             # Render index.html from html/index.html using config.env
             ${renderHtml}
